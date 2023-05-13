@@ -16,3 +16,4 @@ mongoose.connection.on("disconnected", ()=>{
     console.log(`disconnected from MONGO_DB .. ε=ε=┏( ・＿・)┛ `);
 });
 
+module.exports = mongoose;

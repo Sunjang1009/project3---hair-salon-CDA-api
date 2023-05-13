@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('../config/connection');
 
 const clientSchema = new mongoose.Schema({
     name : {
@@ -29,6 +29,6 @@ const clientSchema = new mongoose.Schema({
     timestamps:true
 });
 
-const Client = mongoose.model("Client", clientSchema);
+const Clients = mongoose.model("Client", clientSchema);
 
-module.exports = Client;
+module.exports = Clients;
