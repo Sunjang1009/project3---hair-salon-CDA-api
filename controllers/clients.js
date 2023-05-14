@@ -2,7 +2,7 @@ const express = require("express");
 const Clients = require('../models/Clients');
 const router = express.Router();
 
-//router set up
+//Client Index route
 router.get("/", async (req,res)=>{
     try{
         res.json(await Clients.find({}));
@@ -10,7 +10,7 @@ router.get("/", async (req,res)=>{
         res.status(400).json(err);
     }
 });
-
+//Create route
 router.post("/", async (req,res)=>{
     try{
         res.json(await Clients.create(req.body))
@@ -19,6 +19,7 @@ router.post("/", async (req,res)=>{
     }
 });
 
+//Update route
 router.put("/:id", async (req,res)=>{
     try{
         res.json(await Clients.findByIdAndUpdate(req.params.id, req.body, {new:true}));
@@ -27,6 +28,7 @@ router.put("/:id", async (req,res)=>{
     }
 })
 
+//Delete route
 router.delete("/:id", async(req,res)=>{
     try{
         res.json(await Clients.findByIdAndRemove(req.params.id));
