@@ -10,6 +10,18 @@ router.get("/", async (req,res)=>{
         res.status(400).json(err);
     }
 });
+
+//Client show route
+router.get("/:id", async (req,res,next)=>{
+    try{
+        const myClient = await Clients.findById(req.params.id);
+        res.json(myClient)
+    }catch(err){
+        console.log(err)
+        next();
+    }
+})
+
 //Create route
 router.post("/", async (req,res)=>{
     try{
