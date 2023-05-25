@@ -23,6 +23,11 @@ const clientSchema = new mongoose.Schema({
     },
     service : {
         type : String
+    },
+    owner : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
+        required : true
     }
 
 },{

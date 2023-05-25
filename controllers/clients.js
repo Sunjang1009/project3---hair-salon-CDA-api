@@ -5,7 +5,8 @@ const router = express.Router();
 //Client Index route
 router.get("/", async (req,res)=>{
     try{
-        res.json(await Clients.find({}));
+        const allClients = await Clients.find().populate("owner", "username -_id").exec()
+        res.json(allClients);
     }catch(err){
         res.status(400).json(err);
     }
@@ -14,7 +15,9 @@ router.get("/", async (req,res)=>{
 //Client show route
 router.get("/:id", async (req,res,next)=>{
     try{
-        const myClient = await Clients.findById(req.params.id);
+        const myClient = await Clients.findById(req.params.id)
+            .populate("owner")
+            .exec();
         res.json(myClient)
     }catch(err){
         console.log(err)
