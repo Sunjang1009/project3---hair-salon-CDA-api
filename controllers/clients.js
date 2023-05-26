@@ -1,6 +1,7 @@
 const express = require("express");
 const Clients = require('../models/Clients');
 const router = express.Router();
+const { handleValidateOwnership, requireToken } = require("../middleware/auth");
 
 //Client Index route
 router.get("/", async (req,res)=>{
@@ -26,31 +27,63 @@ router.get("/:id", async (req,res,next)=>{
 })
 
 //Create route
-router.post("/", async (req,res)=>{
+router.post("/", requireToken, async (req,res)=>{
     try{
-        res.json(await Clients.create(req.body))
+
+        const owner = req.user._id
+        req.body.owner = owner
+
+        const newClient = await Clients.create(req.body)
+        res.json(await Clients.create(newClient))
     }catch(err){
         res.status(400).json(err);
     }
 });
 
 //Update route
-router.put("/:id", async (req,res)=>{
+router.put("/:id", requireToken, async (req,res)=>{
     try{
-        res.json(await Clients.findByIdAndUpdate(req.params.id, req.body, {new:true}));
+        handleValidateOwnership(req, await Clients.findById(req.params.id))
+        const updatedClient = await Clients.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new:true}
+        )
+        res.status(200).json(updatedClient);
     }catch(err){
-        res.status(400).json(err);
+        res.status(400).json({ err : err.message });
     }
 })
 
 //Delete route
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id", requireToken, async(req,res)=>{
     try{
-        res.json(await Clients.findByIdAndRemove(req.params.id));
+
+        handleValidateOwnership(req, await Clients.findById(req.params.id));
+        const deletedClient = await Clients.findByIdAndRemove(req.params.id);
+
+        res.status(200).json(deletedClient);
     }catch(err){
-        res.status(400).json(err);
+        res.status(400).json({err:err.message});
+    }
+});
+
+router.get("/logout", requireToken, async ( req,res,next)=>{
+    try{
+
+        const currentUser = req.user.username
+        delete req.user
+        res.status(200).json({
+            message: `${currentUser} currently logged out`,
+            isLoggedIn : false,
+            token: "",
+        })
+
+    }catch(err){
+        res.status(400).json({err:err.message})
     }
 })
+
 
 module.exports = router;
 
