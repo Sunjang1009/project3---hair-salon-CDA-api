@@ -11,5 +11,7 @@ As a small business owner, it is important for me to maintain strong relationshi
 https://project3-hair-salon-api.onrender.com
 
 # wireframe screenshot
+![Screenshot](project3WF1.png)
+![Screenshot](project3WF2.png)
 
 
