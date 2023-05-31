@@ -10,3 +10,6 @@ As a small business owner, it is important for me to maintain strong relationshi
 # live website (render.com)
 https://project3-hair-salon-api.onrender.com
 
+# wireframe screenshot
+
+
